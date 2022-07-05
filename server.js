@@ -42,11 +42,12 @@ myDB(async client => {
   const myDataBase = await client.db('database').collection('users');
 
   // Be sure to change the title
-  app.route('/').get((req, res) => {
+  app.route('/').get( (req, res) => {
     //Change the response to render the Pug template
     res.render('pug', {
       title: 'Connected to Database',
-      message: 'Please login'
+      message: 'Please login',
+      showLogin: true
     });
   });
 
@@ -73,6 +74,20 @@ myDB(async client => {
         done(null, doc);
       });
     });
+
+  ;
+  app.use (passport.authenticate('local', { failureRedirect: '/' }) );
+  app.route('/login')
+    .post( 
+    function (req, res) {
+    console.log('login/post :');
+      res.redirect('/profile').render('profile');
+    }
+  );
+ 
+
+
+  
   // Be sure to add this...
 }).catch(e => {
   app.route('/').get((req, res) => {
